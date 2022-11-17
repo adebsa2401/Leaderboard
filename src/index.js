@@ -1,44 +1,38 @@
-import Score from './models/score.js';
+import refreshScoresTab from './renders/refreshScoresTab.js';
 import renderScore from './renders/scoreRow.js';
 import './style.css';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const scoreTab = document.querySelector('#scores-tab');
-  const scores = Score.getAll();
+document.addEventListener('DOMContentLoaded', refreshScoresTab);
 
-  if (scores.length === 0) {
-    scoreTab.classList.add('empty-scores-tab');
-    scoreTab.innerHTML = 'No recent scores';
-  } else {
-    scoreTab.classList.remove('empty-scores-tab');
-    scores.forEach((score) => {
-      const row = renderScore(score);
-      scoreTab.prepend(row);
-    });
-  }
-});
-
-document.querySelector('form').addEventListener('submit', (event) => {
+document.querySelector('form').addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const formData = new FormData(event.target);
-  const name = formData.get('name');
+  const user = formData.get('user');
   const score = formData.get('score');
 
   const scoreTab = document.querySelector('#scores-tab');
+  
+  const response = await fetch(process.env.BASE_URL + '/games/' + process.env.GAME_ID + '/scores/', {
+    method: 'POST',
+    body: JSON.stringify({ user, score }),
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    }
+  });
+  
   if (scoreTab.childElementCount === 0) {
     scoreTab.innerHTML = '';
     scoreTab.classList.remove('empty-scores-tab');
   }
-  scoreTab.prepend(renderScore(Score.add(name, score)));
+
+  scoreTab.prepend(renderScore({ user, score }));
+
   event.target.reset();
 });
 
-document.querySelector('#refresh-scores').addEventListener('click', () => {
-  Score.removeAll();
-
-  const scoreTab = document.querySelector('#scores-tab');
-  Array.from(scoreTab.childNodes).forEach((node) => node.remove());
-  scoreTab.classList.add('empty-scores-tab');
-  scoreTab.innerHTML = 'No recent scores';
-});
+document.querySelector('#refresh-scores').addEventListener('click', refreshScoresTab);
