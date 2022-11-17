@@ -212,7 +212,6 @@
     "fs-minipass": "^2.1.0",
     "fs-monkey": "^1.0.3",
     "fs.realpath": "^1.0.0",
-    "fsevents": "^2.3.2",
     "ftp": "^0.3.10",
     "function-bind": "^1.1.1",
     "function.prototype.name": "^1.1.5",
