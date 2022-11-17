@@ -1,0 +1,30 @@
+main {
+  display: flex;
+  gap: 30px;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form *[type="submit"] {
+  align-self: flex-end;
+}
+
+#scores-tab {
+  border: solid 1px #000;
+}
+
+.empty-scores-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+}
