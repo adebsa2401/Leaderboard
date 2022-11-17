@@ -4,8 +4,8 @@ export default async () => {
   const scoreTab = document.querySelector('#scores-tab');
 
   const response = await fetch(`${process.env.BASE_URL}/games/${process.env.GAME_ID}/scores/`, {
-    mode: 'no-cors',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization',
@@ -13,9 +13,15 @@ export default async () => {
     },
   });
 
-  scoreTab.classList.remove('empty-scores-tab');
-  scoreTab.innerHTML = '';
+  const obj = await response.json();
+  const scores = obj.result;
 
-  const scores = JSON.parse(await response.json()).result;
-  scores.forEach((score) => scoreTab.append(renderScore(score)));
+  if (scores.length > 0) {
+    scoreTab.classList.remove('empty-scores-tab');
+    scoreTab.innerHTML = '';
+    scores.forEach((score) => scoreTab.append(renderScore(score)));
+  } else {
+    scoreTab.classList.add('empty-scores-tab');
+    scoreTab.innerHTML = 'No scores available';
+  }
 };

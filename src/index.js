@@ -16,7 +16,6 @@ document.querySelector('form').addEventListener('submit', async (event) => {
   await fetch(`${process.env.BASE_URL}/games/${process.env.GAME_ID}/scores/`, {
     method: 'POST',
     body: JSON.stringify({ user, score }),
-    mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
