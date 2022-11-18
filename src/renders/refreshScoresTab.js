@@ -19,7 +19,7 @@ export default async () => {
   if (scores.length > 0) {
     scoreTab.classList.remove('empty-scores-tab');
     scoreTab.innerHTML = '';
-    scores.forEach((score) => scoreTab.append(renderScore(score)));
+    scores.forEach((score, index) => scoreTab.append(renderScore(score, index)));
   } else {
     scoreTab.classList.add('empty-scores-tab');
     scoreTab.innerHTML = 'No scores available';
